@@ -1,2 +1,2 @@
 #!/bin/bash
-( ls -a | awk 'BEGIN {FS=OFS="\t"} {print $0, (/^\./ ? "" : ",")}' | LC_ALL=C sort -t$'\t' -k1,1 -k1.1d -k1.1 -k2 | tr -d '\t'; echo )
+ls -l -a -m -p
