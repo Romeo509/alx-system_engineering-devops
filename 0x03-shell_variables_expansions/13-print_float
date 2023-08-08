@@ -1,2 +1,2 @@
 #!/bin/bash
-13-print_float
+printf "%0.2f\n" $NUM
