@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+ipv4_addresses=$(ifconfig | grep -oP 'inet \K[\d.]+')
+
+for address in $ipv4_addresses; do
+    echo "$address"
+done
