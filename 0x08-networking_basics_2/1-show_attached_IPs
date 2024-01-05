@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+## Use ifconfig to get the list of active IPv4 addresses
 
 ipv4_addresses=$(ifconfig | grep -oP 'inet \K[\d.]+')
 
