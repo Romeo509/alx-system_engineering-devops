@@ -1,15 +1,9 @@
 #!/usr/bin/env bash
-
 # Backup /etc/hosts file
+
 sudo cp /etc/hosts /etc/hosts.bak
 
-# Change localhost to 127.0.0.2 and facebook.com to 8.8.8.8 in /etc/hosts
 sudo sed -i 's/127.0.0.1\tlocalhost/127.0.0.2\tlocalhost/' /etc/hosts
 sudo sed -i 's/^[0-9.]*[[:space:]]*facebook.com/8.8.8.8\tfacebook.com/' /etc/hosts
 
-# Display success message
 echo "IP addresses updated successfully."
-
-# To revert the changes, uncomment the following lines and run the script again
-# sudo cp /etc/hosts.bak /etc/hosts
-# echo "Reverted to original IP addresses."
