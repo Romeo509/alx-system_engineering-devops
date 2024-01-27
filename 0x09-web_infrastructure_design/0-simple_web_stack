@@ -1,7 +1,7 @@
-<h2>Components<h2>
+Components
 
 What is a server?
-----------------------
+-----------------
 A server is a computer system or software that provides services or
  resources to other computers, known as clients, over a network.
 
@@ -36,8 +36,8 @@ What is the server using to communicate with the user's computer requesting the 
 
 The server communicates with the user's computer using the HTTP protocol over the internet.
 
-<hr>
-<h3>Issues with this Infrastructure:</h3>
+
+Issues with this Infrastructure:
 
 SPOF (Single Point of Failure):
 -------------------------------

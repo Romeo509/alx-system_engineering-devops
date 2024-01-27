@@ -1,0 +1,105 @@
+
+
+Three-Server Web Infrastructure for www.foobar.com
+
+Components:
+
+Server 1 (Primary):
+----------------------
+Physical or virtual machine hosting part of the infrastructure.
+Assigned IP address 8.8.8.8.
+
+
+Server 2 (Replica):
+--------------------
+Another physical or virtual machine, providing redundancy.
+Assigned IP address 8.8.8.9.
+
+
+Web Server (Nginx):
+-------------------
+Handles HTTP requests, serves static content, and manages resources.
+Listens on port 80 and forwards requests to the load balancer.
+
+
+Load Balancer (HAproxy):
+------------------------
+Distributes incoming traffic across multiple servers to ensure load distribution and high availability.
+Configured with a distribution algorithm (e.g., Round Robin) to evenly distribute requests.
+
+
+Application Server:
+-------------------
+Executes the application code, processes dynamic content.
+Listens on a specified port (e.g., 8080) and hosts the application files (your code base).
+
+
+Database (MySQL Primary-Replica Cluster):
+-----------------------------------------
+Stores and manages website data using a Primary-Replica (Master-Slave) cluster setup.
+Consists of a Primary node (Master) and a Replica node (Slave).
+Specifics:
+
+
+Why add Server 2 (Replica)?
+------------------------------
+Enhances redundancy and availability. In case Server 1 (Primary) fails, Server 2 (Replica)
+ can take over.
+
+
+Why add Load Balancer (HAproxy)?
+--------------------------------
+Improves scalability and ensures even distribution of traffic among servers. 
+Enhances fault tolerance.
+
+
+Distribution algorithm for Load Balancer:
+-----------------------------------------
+Configured with a Round Robin algorithm to distribute requests evenly among the available
+ servers.
+
+
+Active-Active or Active-Passive setup for Load Balancer:
+--------------------------------------------------------
+Active-Active: Both servers are actively serving requests simultaneously.
+Active-Passive: Only one server is active at a time, with the passive one taking over 
+in case of failure.
+
+
+How a Database Primary-Replica Cluster works:
+---------------------------------------------
+Primary node (Master) handles write operations and replicates data to the Replica node (Slave),
+ which handles read operations.
+Ensures data consistency and provides fault tolerance.
+
+
+Difference between Primary and Replica in regard to the application:
+---------------------------------------------------------------------
+The application primarily interacts with the Primary node for write operations. 
+Read operations can be distributed to the Replica node to balance the load and enhance
+ performance.
+
+
+Issues with this Infrastructure:
+=================================
+
+SPOF:
+-----
+Load Balancer may become a single point of failure. Consider redundancy for the
+ load balancer to mitigate this.
+
+
+Security Issues:
+----------------
+No firewall mentioned in the requirements. Implementing a firewall is crucial for securing the infrastructure.
+HTTPS is not implemented, exposing communication to potential eavesdropping. Adding HTTPS is essential for data encryption.
+
+
+No Monitoring:
+---------------
+Absence of monitoring tools means there's no real-time insight into the health and performance of the infrastructure. Implement monitoring solutions to detect and address issues proactively.
+
+
+
+
+
