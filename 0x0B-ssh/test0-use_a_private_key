@@ -2,4 +2,4 @@
 # SSH script for connecting to the server with the specified private key 
 # and user
 # Key: ~/.ssh/school, User: ubuntu
-ssh -i ~/.ssh/school ubuntu@34.204.76.18
+ssh -i 0-RSA_public_key.pub ubuntu@54.196.25.60
