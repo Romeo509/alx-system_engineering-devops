@@ -1,49 +1,20 @@
 # Add stable version of nginx repository
-exec { 'add nginx stable repo':
-  command => 'sudo add-apt-repository ppa:nginx/stable',
-}
-
-# Update software packages list
-exec { 'update packages':
-  command => 'apt-get update',
-  require => Exec['add nginx stable repo'],
-}
-
-# Install nginx
 package { 'nginx':
-  ensure => 'installed',
-  require => Exec['update packages'],
+  ensure => installed,
 }
 
-# Configure Nginx
-file { '/etc/nginx/sites-enabled/default':
-  ensure  => file,
-  content => "
-    server {
-      listen 80 default_server;
-      listen [::]:80 default_server;
-      root /var/www/html;
-      index index.html;
-
-      location / {
-        try_files \$uri \$uri/ =404;
-      }
-
-      error_page 404 /404.html;
-      location  /404.html {
-        internal;
-      }
-
-      location ~ /redirect_me {
-        rewrite ^ https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;
-      }
-    }
-  ",
-  require => Package['nginx'],
+file_line { 'aaaaa':
+  ensure => 'present',
+  path   => '/etc/nginx/sites-available/default',
+  after  => 'listen 80 default_server;',
+  line   => 'rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;',
 }
 
-# Restart Nginx
+file { '/var/www/html/index.html':
+  content => 'Hello World!',
+}
+
 service { 'nginx':
-  ensure => 'running',
-  require => File['/etc/nginx/sites-enabled/default'],
+  ensure  => running,
+  require => Package['nginx'],
 }
