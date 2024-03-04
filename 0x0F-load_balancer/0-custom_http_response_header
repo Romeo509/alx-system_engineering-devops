@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 # This script transfers a file from the client to a server using scp.
+sudo apt-get -y update
+sudo apt-get -y install nginx
+
+HOST_NAME=$(hostname)
+HEADER="\\\n\tadd_header X-Served-By $HOST_NAME;\n"
+FIND=$(grep "X-Server-by" /etc/nginx/sites-available/default)
+if [[ -z $FIND ]]; then
+    sed -i "23i $HEADER" /etc/nginx/sites-available/default
+fi
+
 
 if [ "$#" -lt 4 ]; then
     echo "Usage: $0 PATH_TO_FILE IP USERNAME PATH_TO_SSH_KEY"
@@ -22,14 +32,12 @@ ufw allow 'Nginx HTTP'
 echo "Hello World!" > /var/www/html/index.html
 service nginx start
 
-sudo apt-get -y update
-sudo apt-get -y install nginx
+
 sudo ufw allow 'Nginx HTTP'
 echo "Hello World" | sudo tee /var/www/html/index
 sudo sed -i '/listen 80 default_server/a rewrite ^/redirect_me https://www.youtube.com/ permanent;' /etc/nginx/sites-available/default
 sudo service nginx restart
 
-apt-get -y update
 apt-get -y install nginx
 echo "Hello World!" | sudo tee /var/www/html/index.html > /dev/null
 sed -i "46i rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;" /etc/nginx/sites-available/default
