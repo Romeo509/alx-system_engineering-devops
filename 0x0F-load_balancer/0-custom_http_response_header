@@ -1,12 +1,59 @@
 #!/usr/bin/env bash
-sudo apt-get update
-sudo apt-get install -y nginx
+# This script transfers a file from the client to a server using scp.
 
-# Get the hostname of the server
-HOSTNAME=$(hostname)
+if [ "$#" -lt 4 ]; then
+    echo "Usage: $0 PATH_TO_FILE IP USERNAME PATH_TO_SSH_KEY"
+    exit 1
+fi
 
-# Configure Nginx to add custom header X-Served-By
-sudo sed -i '/^server_name _;/ a \\n\tadd_header X-Served-By $HOSTNAME;' /etc/nginx/sites-available/default
+file_path=$1
+server_ip=$2
+username=$3
+ssh_key=$4
 
-# Restart Nginx to apply changes
+# Transfer the file using scp
+scp -o StrictHostKeyChecking=no -i "$ssh_key" "$file_path" "$username@$server_ip":~/ || { echo "Error transferring file"; exit 1; }
+
+echo "File transferred successfully to $username@$server_ip:~/"
+
+apt-get update
+apt-get -y install nginx
+ufw allow 'Nginx HTTP'
+echo "Hello World!" > /var/www/html/index.html
+service nginx start
+
+sudo apt-get -y update
+sudo apt-get -y install nginx
+sudo ufw allow 'Nginx HTTP'
+echo "Hello World" | sudo tee /var/www/html/index
+sudo sed -i '/listen 80 default_server/a rewrite ^/redirect_me https://www.youtube.com/ permanent;' /etc/nginx/sites-available/default
 sudo service nginx restart
+
+apt-get -y update
+apt-get -y install nginx
+echo "Hello World!" | sudo tee /var/www/html/index.html > /dev/null
+sed -i "46i rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;" /etc/nginx/sites-available/default
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/custom_404.html > /dev/null
+sed -i "46i error_page 404 /custom_404.html;" /etc/nginx/sites-available/default
+service nginx restart
+
+
+package { 'nginx':
+  ensure => installed,
+}
+
+file_line { 'aaaaa':
+  ensure => 'present',
+  path   => '/etc/nginx/sites-available/default',
+  after  => 'listen 80 default_server;',
+  line   => 'rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;',
+}
+
+file { '/var/www/html/index.html':
+  content => 'Hello World!',
+}
+
+service { 'nginx':
+  ensure  => running,
+  require => Package['nginx'],
+}
