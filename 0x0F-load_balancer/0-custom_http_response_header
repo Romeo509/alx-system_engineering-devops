@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
-# This script transfers a file from the client to a server using scp.
-
-if [ "$#" -lt 4 ]; then
+display_usage() {
     echo "Usage: $0 PATH_TO_FILE IP USERNAME PATH_TO_SSH_KEY"
     exit 1
+}
+
+# Check if the correct number of arguments is provided
+if [ "$#" -ne 4 ]; then
+    display_usage
 fi
 
+# Assign arguments to variables
 file_path=$1
 server_ip=$2
 username=$3
@@ -16,44 +20,22 @@ scp -o StrictHostKeyChecking=no -i "$ssh_key" "$file_path" "$username@$server_ip
 
 echo "File transferred successfully to $username@$server_ip:~/"
 
-apt-get update
-apt-get -y install nginx
-ufw allow 'Nginx HTTP'
-echo "Hello World!" > /var/www/html/index.html
-service nginx start
-
-sudo apt-get -y update
+# Install and configure Nginx
+sudo apt-get update
 sudo apt-get -y install nginx
 sudo ufw allow 'Nginx HTTP'
-echo "Hello World" | sudo tee /var/www/html/index
+
+# Create default index.html
+echo "Hello World!" | sudo tee /var/www/html/index.html > /dev/null
+
+# Start Nginx service
+sudo service nginx start
+
+# Additional Nginx configurations
 sudo sed -i '/listen 80 default_server/a rewrite ^/redirect_me https://www.youtube.com/ permanent;' /etc/nginx/sites-available/default
 sudo service nginx restart
 
-apt-get -y update
-apt-get -y install nginx
-echo "Hello World!" | sudo tee /var/www/html/index.html > /dev/null
-sed -i "46i rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;" /etc/nginx/sites-available/default
-echo "Ceci n'est pas une page" | sudo tee /var/www/html/custom_404.html > /dev/null
-sed -i "46i error_page 404 /custom_404.html;" /etc/nginx/sites-available/default
-service nginx restart
-
-
-package { 'nginx':
-  ensure => installed,
-}
-
-file_line { 'aaaaa':
-  ensure => 'present',
-  path   => '/etc/nginx/sites-available/default',
-  after  => 'listen 80 default_server;',
-  line   => 'rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;',
-}
-
-file { '/var/www/html/index.html':
-  content => 'Hello World!',
-}
-
-service { 'nginx':
-  ensure  => running,
-  require => Package['nginx'],
-}
+# Additional configurations and custom 404 page
+sudo echo "Ceci n'est pas une page" | sudo tee /var/www/html/custom_404.html > /dev/null
+sudo sed -i "46i error_page 404 /custom_404.html;" /etc/nginx/sites-available/default
+sudo service nginx restart
