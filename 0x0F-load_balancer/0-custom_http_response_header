@@ -1,19 +1,15 @@
 #!/usr/bin/env bash
 # This script transfers a file from the client to a server using scp.
-sudo apt-get -y update
-sudo apt-get -y install nginx
 
-HOST_NAME=$(hostname)
-HEADER="\\\n\tadd_header X-Served-By $HOST_NAME;\n"
-FIND=$(grep "X-Server-by" /etc/nginx/sites-available/default)
-if [[ -z $FIND ]]; then
-    sed -i "23i $HEADER" /etc/nginx/sites-available/default
-fi
-
-
-if [ "$#" -lt 4 ]; then
+# Function to display usage information
+display_usage() {
     echo "Usage: $0 PATH_TO_FILE IP USERNAME PATH_TO_SSH_KEY"
     exit 1
+}
+
+# Check if the correct number of arguments is provided
+if [ "$#" -lt 4 ]; then
+    display_usage
 fi
 
 file_path=$1
@@ -26,21 +22,39 @@ scp -o StrictHostKeyChecking=no -i "$ssh_key" "$file_path" "$username@$server_ip
 
 echo "File transferred successfully to $username@$server_ip:~/"
 
-apt-get update
-apt-get -y install nginx
-ufw allow 'Nginx HTTP'
-echo "Hello World!" > /var/www/html/index.html
-service nginx start
+# Install and configure Nginx
+sudo apt-get -y update
+sudo apt-get -y install nginx
 
+# Add custom response header to Nginx for debugging
+HOST_NAME=$(hostname)
+HEADER="\\\n\tadd_header X-Served-By $HOST_NAME;\n"
+FIND=$(grep "X-Server-by" /etc/nginx/sites-available/default)
+if [[ -z $FIND ]]; then
+    sudo sed -i "23i $HEADER" /etc/nginx/sites-available/default
+fi
 
-sudo ufw allow 'Nginx HTTP'
-echo "Hello World" | sudo tee /var/www/html/index
-sudo sed -i '/listen 80 default_server/a rewrite ^/redirect_me https://www.youtube.com/ permanent;' /etc/nginx/sites-available/default
-sudo service nginx restart
-
-apt-get -y install nginx
+# Create default index.html
 echo "Hello World!" | sudo tee /var/www/html/index.html > /dev/null
-sed -i "46i rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;" /etc/nginx/sites-available/default
-echo "Ceci n'est pas une page" | sudo tee /var/www/html/custom_404.html > /dev/null
-sed -i "46i error_page 404 /custom_404.html;" /etc/nginx/sites-available/default
-service nginx restart
+
+# Start Nginx service
+sudo service nginx start
+
+# Additional Nginx configurations from your friend's script
+# Add redirection to another page
+FIND=$(grep "redirect_me" /etc/nginx/sites-available/default)
+STRING="\\\n\tlocation /redirect_me {\n\t\t return 301 https://www.youtube.com/watch?v=3MbaGJN2ioQ;\n\t}\n"
+if [[ -z $FIND ]]; then
+    sudo sed -i "42i $STRING" /etc/nginx/sites-available/default
+fi
+
+# Add error page 404
+FIND=$(grep "error_page 404" /etc/nginx/sites-available/default)
+ERROR="\\\n\terror_page 404 /custom_404.html;\n"
+if [[ -z $FIND ]]; then
+    echo "Ceci n'est pas une page" | sudo tee /var/www/html/custom_404.html > /dev/null
+    sudo sed -i "40i $ERROR" /etc/nginx/sites-available/default
+fi
+
+# Restart Nginx to apply changes
+sudo service nginx restart
