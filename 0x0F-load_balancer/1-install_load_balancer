@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Bash script to install and configure HAProxy on lb-01 server
+
+# Update package list
+sudo apt-get update
+
+# Install HAProxy
+apt-get -y install haproxy=1.6.\*
+
+# Configure HAProxy
+echo '
+frontend romeo509.tech
+    bind 0:80
+    default_backend web_servers
+
+backend web_servers
+    balance roundrobin
+    server web-01 491833-web-01:80
+    server web-02 491833-web-02:80
+' >> /etc/haproxy/haproxy.cfg
+
+service haproxy restart
