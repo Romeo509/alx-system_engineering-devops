@@ -15,8 +15,8 @@ frontend romeo509.tech
 
 backend web_servers
     balance roundrobin
-    server web-01 491833-web-01:80
-    server web-02 491833-web-02:80
+    server 491833-web-01 100.26.132.7:80
+    server 491833-web-02 107.23.95.221:80
 ' >> /etc/haproxy/haproxy.cfg
 
 service haproxy restart
