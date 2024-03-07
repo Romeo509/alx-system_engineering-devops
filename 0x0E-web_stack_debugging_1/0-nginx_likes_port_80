@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Check if default configuration exists
+if [ -e /etc/nginx/sites-available/default ]; then
+    # Remove default configuration from sites-enabled
+    rm /etc/nginx/sites-enabled/default
+
+    # Create symbolic link
+    ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+
+    # Restart Nginx
+    service nginx restart
+
+    echo "Nginx configured to listen on port 80."
+else
+    echo "Default Nginx configuration not found."
+fi
