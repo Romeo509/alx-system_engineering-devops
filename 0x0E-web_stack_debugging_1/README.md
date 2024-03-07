@@ -8,5 +8,7 @@ Debugging Steps
 
 <h3>2. Examine Nginx Configuration</h3>
     cat /etc/nginx/sites-available/default
+Verify that the Nginx configuration includes the necessary settings to listen on port 80.
 
-
+<h3>3. Check for Existing Default Configuration in sites-enabled</h3>
+#ls /etc/nginx/sites-enabled
