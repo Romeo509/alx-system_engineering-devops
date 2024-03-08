@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+#The script
+
+declare -a subdomains=("www" "lb-01" "web-01" "web-02")
+
+get_subdomain_info() {
+    local subdomain="$1"
+    local domain="$2"
+    
+    dig_result=$(dig "$subdomain.$domain" +short)
+    
+    if [ -n "$dig_result" ]; then
+        record_type=$(dig "$subdomain.$domain" | awk '/ANSWER SECTION:/ {getline; print $4}')
+        destination=$(dig "$subdomain.$domain" +short)
+        
+        echo "The subdomain $subdomain is a $record_type record and points to $destination"
+    else
+        echo "No information available for $subdomain"
+    fi
+}
+
+if [ $# -eq 1 ]; then
+    domain="$1"
+    
+    for subdomain in "${subdomains[@]}"; do
+        get_subdomain_info "$subdomain" "$domain"
+    done
+elif [ $# -eq 2 ]; then
+    domain="$1"
+    subdomain="$2"
+    
+    get_subdomain_info "$subdomain" "$domain"
+fi
