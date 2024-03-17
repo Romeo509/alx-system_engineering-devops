@@ -1,0 +1,39 @@
+***   What happens when you type google.com in your browser and press Enter    *** 
+
+In the digital age, we often take for granted the seamless experience of typing a URL into our browser and witnessing the desired web page materialize before our eyes. However, behind this seemingly simple action lies a complex orchestration of protocols, servers, and systems working together harmoniously. In this blog post, we will embark on a journey to uncover the intricate process that occurs when we type "https://www.google.com" into our browser and press Enter.
+
+    DNS Request:
+
+The journey begins with a DNS (Domain Name System) request. When we type "https://www.google.com" into our browser, the browser needs to translate this human-readable domain name into an IP address that can be understood by the underlying network. It sends a DNS query to a DNS resolver, which then searches for the corresponding IP address associated with "www.google.com".
+
+    TCP/IP:
+
+Once the DNS resolver obtains the IP address, the browser initiates a TCP (Transmission Control Protocol) connection to the server hosting the website. TCP ensures reliable and ordered delivery of data packets over the internet. It establishes a connection with the server using a three-way handshake, allowing for seamless communication between the client (browser) and the server.
+
+    Firewall:
+
+Before the TCP connection is established, the request may pass through a firewall. Firewalls act as a barrier between the internal network and external threats, filtering incoming and outgoing traffic based on predetermined security rules. They help prevent unauthorized access to the network and protect against malicious attacks.
+
+    HTTPS/SSL:
+
+In our modern web landscape, security is paramount. HTTPS (Hypertext Transfer Protocol Secure) ensures that the data exchanged between the client and the server is encrypted, safeguarding it from potential eavesdroppers and attackers. SSL (Secure Sockets Layer) or its successor, TLS (Transport Layer Security), encrypts the data transmitted over the network, providing confidentiality and integrity.
+
+    Load-Balancer:
+
+Large-scale websites like Google often employ load balancers to distribute incoming traffic across multiple servers. Load balancers enhance performance, reliability, and scalability by efficiently routing requests to the least busy server in a server pool. They help prevent server overload and ensure optimal resource utilization.
+
+    Web Server:
+
+Upon receiving the request, the load balancer forwards it to one of the web servers hosting the Google website. The web server processes the request, retrieves the requested web page or resource, and prepares it for delivery to the client. Common web servers include Apache, Nginx, and Microsoft IIS.
+
+    Application Server:
+
+Some websites, especially those with dynamic content or interactive features, rely on application servers to generate web pages in real-time. Application servers execute server-side code, interact with databases, and perform other computational tasks. They play a crucial role in delivering dynamic and personalized content to users.
+
+    Database:
+
+Behind the scenes, the application server may interact with a database to retrieve or store data required to fulfill the user's request. Databases store and organize structured data, allowing websites to manage user accounts, store product information, and perform various data-related operations. Common database systems include MySQL, PostgreSQL, and MongoDB.
+
+Conclusion:
+
+As we reach the end of our journey, we have gained a deeper understanding of the intricate process that occurs when we type "https://www.google.com" into our browser and press Enter. From DNS resolution to database interaction, each step plays a vital role in delivering the desired web content to the user. By unraveling the complexities of the web stack, we can better appreciate the remarkable technology that powers our digital experiences.
