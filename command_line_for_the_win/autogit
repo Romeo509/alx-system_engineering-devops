@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Set initial date to 17 December 2023
+date -s "2023-12-17"
+
+# Loop until date reaches 13 January 2024
+while [ "$(date +%Y-%m-%d)" != "2024-01-13" ]; do
+    # Update README.md file
+    git pull
+    echo >> README.md
+    git add .
+    git commit -m 'updated'
+    git push
+
+    # Set date to the next day
+    date -d "tomorrow" "+%Y-%m-%d"
+done
