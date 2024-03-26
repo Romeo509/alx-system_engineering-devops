@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-script that fetches info of all the emloyees
+script that fetches info of all the emloyees and todo
 """
 import json
 import requests
@@ -47,4 +47,3 @@ if __name__ == "__main__":
             }
             builder[user_id].append(json_data)
     export_to_json(builder)
-
