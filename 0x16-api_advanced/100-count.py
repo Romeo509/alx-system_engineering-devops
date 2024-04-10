@@ -3,6 +3,7 @@
 
 import requests
 
+
 def count_words(subreddit, word_list, after="", counts=[]):
     """Count occurrences of words from word_list in Reddit titles"""
 
@@ -12,7 +13,8 @@ def count_words(subreddit, word_list, after="", counts=[]):
     url = f"https://www.reddit.com/r/{subreddit}/hot.json"
     headers = {'user-agent': 'CustomUserAgent'}
 
-    response = requests.get(url, params={'after': after}, headers=headers, allow_redirects=False)
+    response = requests.get(url, params={'after': after}, headers=headers,
+                            allow_redirects=False)
 
     if response.status_code == 200:
         data = response.json()
