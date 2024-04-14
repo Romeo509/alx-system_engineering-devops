@@ -1,4 +1,6 @@
 0x19 Postmortem: Service Outage on April 10, 2024
+![Alt text](pic.jpg)
+
 
 Issue Summary:
 
