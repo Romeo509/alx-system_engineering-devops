@@ -11,10 +11,9 @@ sudo apt install -y net-tools
 
 Deployment Process
 
-    Clone AirBnB Clone v2 Repository
-        Utilizing Git, we cloned the AirBnB clone v2 repository onto our server web-01.
+Clone AirBnB Clone v2 Repository
+Utilizing Git, we cloned the AirBnB clone v2 repository onto our server web-01.
 
-    bash
 
 git clone <repository_url>
 
