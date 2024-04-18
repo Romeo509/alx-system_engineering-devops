@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# lets do it
+
+pgrep gunicorn | xargs kill HUP
+
