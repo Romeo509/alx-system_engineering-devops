@@ -1,4 +1,22 @@
 #!/usr/bin/env bash
 # Gracefully restart Gunicorn
 
-pgrep gunicorn | xargs -r kill -HUP
+# Find all Gunicorn process IDs
+pids=$(pgrep gunicorn)
+
+# Check if pids is empty
+if [ -z "$pids" ]; then
+    echo "No Gunicorn process found"
+    exit 1
+fi
+
+# Send HUP signal to each Gunicorn process
+echo "$pids" | xargs -r kill -HUP
+
+# Check if the kill command was successful
+if [ $? -eq 0 ]; then
+    echo "OK"
+else
+    echo "Failed to restart Gunicorn"
+    exit 1
+fi
