@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# lets do it
+# Gracefully restart Gunicorn
 
-pgrep gunicorn | xargs kill HUP
-
+pgrep gunicorn | xargs -r kill -HUP
